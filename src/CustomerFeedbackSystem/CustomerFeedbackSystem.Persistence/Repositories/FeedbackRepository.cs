@@ -48,6 +48,7 @@ namespace CustomerFeedbackSystem.Infrastructure.Repositories
                 else
                     throw new NullReferenceException("Empty data being passed");
             };
+            entity.Timestamp = DateTime.Now;
             return entity;
         }
         #endregion
