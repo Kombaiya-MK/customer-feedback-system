@@ -53,31 +53,6 @@ namespace CustomerFeedbackSystem.Infrastructure.Repositories
         }
         #endregion
 
-        #region Repository Method for Delete Feedback
-        /// <summary>
-        /// Repository Method for Delete Feedbacks
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="NullReferenceException"></exception>
-        public async Task<Feedback> Delete(int id)
-        {
-            var query = "DELETE FROM FEEDBACKS WHERE Id = @Id";
-
-            using (var connection = _context.CreateConnection())
-            {
-                var feedback = await Get(id);
-                if (feedback != null)
-                {
-                    await connection.ExecuteAsync(query, new { Id = id });
-                    return feedback;
-                }
-                else
-                    throw new NullReferenceException("Feedback doesn't exist!!!");
-            }
-        }
-        #endregion
-
         #region Repository Method for Get Single Feedback
         /// <summary>
         /// Repository Method for Get Single Feedback 
@@ -117,26 +92,5 @@ namespace CustomerFeedbackSystem.Infrastructure.Repositories
         }
         #endregion
 
-        #region Repository Method for Update Feedback
-        /// <summary>
-        /// Repository Method for Update Feedback
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        /// <exception cref="NullReferenceException"></exception>
-        public async Task<Feedback> Update(Feedback entity)
-        {
-            var query = "UPDATE FEEDBACKS SET Comment = @Comment, Rating = @Rating, TimeStamp = @TimeStamp";
-
-            using (var connection = _context.CreateConnection())
-            {
-                await connection.ExecuteAsync(query, entity);
-            }
-            if (entity != null)
-                return entity;
-            else
-                throw new NullReferenceException("Empty object");
-        }
-        #endregion
     }
 }

@@ -4,7 +4,9 @@ using CustomerFeedbackSystem.Application.Services;
 using CustomerFeedbackSystem.Domain.Models;
 using CustomerFeedbackSystem.Infrastructure.Context;
 using CustomerFeedbackSystem.Infrastructure.Interfaces;
+using CustomerFeedbackSystem.Infrastructure.Middleware;
 using CustomerFeedbackSystem.Infrastructure.Repositories;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +19,13 @@ builder.Services.AddSwaggerGen();
 
 //User defined Dependency Injection
 builder.Services.AddSingleton<FeedbackContext>();
-builder.Services.AddScoped<IRepo<Feedback,int>, FeedbackRepository>();
+builder.Services.AddScoped<IRepo<Feedback, int>, FeedbackRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+
+//Logger - Serilog
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -29,6 +35,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//Middlewares 
+
+app.UseMiddleware<ApiKeyMiddleware>();
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
