@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerFeedbackSystem.API", "CustomerFeedbackSystem.API\CustomerFeedbackSystem.API.csproj", "{11BF4C9D-49E7-41EE-923F-3EE9AAE01F77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerFeedbackSystem.API", "CustomerFeedbackSystem.API\CustomerFeedbackSystem.API.csproj", "{11BF4C9D-49E7-41EE-923F-3EE9AAE01F77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerFeedbackSystem.Domain", "CustomerFeedbackSystem.Domain\CustomerFeedbackSystem.Domain.csproj", "{CC558801-FCD0-423F-8494-821DD8C65D44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerFeedbackSystem.Domain", "CustomerFeedbackSystem.Domain\CustomerFeedbackSystem.Domain.csproj", "{CC558801-FCD0-423F-8494-821DD8C65D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerFeedbackSystem.Application", "CustomerFeedbackSystem.Application\CustomerFeedbackSystem.Application.csproj", "{B7038CF0-2948-4E3D-9052-BB620AA90E40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerFeedbackSystem.Application", "CustomerFeedbackSystem.Application\CustomerFeedbackSystem.Application.csproj", "{B7038CF0-2948-4E3D-9052-BB620AA90E40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerFeedbackSystem.Infrastructure", "CustomerFeedbackSystem.Persistence\CustomerFeedbackSystem.Infrastructure.csproj", "{5CA108BE-D554-48F7-A26A-46C1B814787D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerFeedbackSystem.Infrastructure", "CustomerFeedbackSystem.Persistence\CustomerFeedbackSystem.Infrastructure.csproj", "{5CA108BE-D554-48F7-A26A-46C1B814787D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerFeedbackSystem.Tests", "CustomerFeedbackSystem.Tests\CustomerFeedbackSystem.Tests.csproj", "{5B510454-CEB1-495C-BB03-1DB1C167EED4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5CA108BE-D554-48F7-A26A-46C1B814787D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CA108BE-D554-48F7-A26A-46C1B814787D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CA108BE-D554-48F7-A26A-46C1B814787D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B510454-CEB1-495C-BB03-1DB1C167EED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B510454-CEB1-495C-BB03-1DB1C167EED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B510454-CEB1-495C-BB03-1DB1C167EED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B510454-CEB1-495C-BB03-1DB1C167EED4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
