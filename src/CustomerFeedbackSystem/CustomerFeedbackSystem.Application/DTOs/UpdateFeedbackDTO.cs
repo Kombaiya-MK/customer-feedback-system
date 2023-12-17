@@ -1,5 +1,8 @@
-﻿namespace CustomerFeedbackSystem.Application.DTOs
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace CustomerFeedbackSystem.Application.DTOs
 {
+    [ExcludeFromCodeCoverage]
     public class UpdateFeedbackDTO
     {
         public int FeedbackId { get; set; }

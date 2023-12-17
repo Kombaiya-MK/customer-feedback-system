@@ -23,13 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="API.Tests\" />
-    <Folder Include="Application.Tests\" />
     <Folder Include="Infrastructure.Tests\Middleware\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Infrastructure.Tests\Repositories\FeedbackRepostitoryTest.cs" />
+    <ProjectReference Include="..\CustomerFeedbackSystem.API\CustomerFeedbackSystem.API.csproj" />
+    <ProjectReference Include="..\CustomerFeedbackSystem.Application\CustomerFeedbackSystem.Application.csproj" />
+    <ProjectReference Include="..\CustomerFeedbackSystem.Persistence\CustomerFeedbackSystem.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
