@@ -6,6 +6,7 @@ using CustomerFeedbackSystem.Infrastructure.Context;
 using CustomerFeedbackSystem.Infrastructure.Interfaces;
 using CustomerFeedbackSystem.Infrastructure.Middleware;
 using CustomerFeedbackSystem.Infrastructure.Repositories;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
 
@@ -23,6 +24,15 @@ builder.Services.AddSingleton<FeedbackContext>();
 builder.Services.AddScoped<IRepo<Feedback, int>, FeedbackRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+
+// Access configuration
+var configuration = builder.Configuration;
+
+builder.Services.AddStackExchangeRedisCache(opts =>
+{
+    opts.Configuration = configuration.GetConnectionString("cache-db");
+    opts.InstanceName = "feedback-cache";
+});
 
 //Logger - Serilog
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();

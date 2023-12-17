@@ -2,7 +2,9 @@
 using CustomerFeedbackSystem.Application.DTOs;
 using CustomerFeedbackSystem.Application.Interfaces;
 using CustomerFeedbackSystem.Domain.Models;
+using CustomerFeedbackSystem.Infrastructure.Extensions;
 using CustomerFeedbackSystem.Infrastructure.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,13 @@ namespace CustomerFeedbackSystem.Application.Services
         #region Constructor
         private readonly IRepo<Feedback, int> _repo;
         private readonly IMapper _mapper;
+        private readonly IDistributedCache _cache;
 
-        public FeedbackService(IRepo<Feedback, int> repo, IMapper mapper)
+        public FeedbackService(IRepo<Feedback, int> repo, IMapper mapper, IDistributedCache cache)
         {
             _repo = repo;
             _mapper = mapper;
+            _cache = cache;
         }
         #endregion
 
@@ -32,8 +36,16 @@ namespace CustomerFeedbackSystem.Application.Services
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<Feedback> GetFeedbackAsync(int Id)
-        {  
-            return await _repo.Get(Id);
+        {
+            var cachedFeedback = await _cache.GetFromCacheAsync<Feedback>($"feedbackKey_{Id}");
+            if (cachedFeedback != null)
+            {
+                return cachedFeedback;
+            }
+            
+            var feedback = await _repo.Get(Id);
+            await _cache.SetInCacheAsync($"feedbackKey_{Id}", feedback);
+            return feedback;
         }
         #endregion
 
@@ -45,8 +57,15 @@ namespace CustomerFeedbackSystem.Application.Services
         /// <returns></returns>
         public async Task<ICollection<Feedback>> GetFeedbacksByProductAsync(int Id)
         {
+            var cachedFeedbacks = await _cache.GetFromCacheAsync<ICollection<Feedback>>($"feedbacksByProductKey_{Id}");
+            if (cachedFeedbacks != null)
+            {
+                return cachedFeedbacks;
+            }
             var feedbacks = await _repo.GetAll();
-            return feedbacks.Where(f => f.ProductId == Id).ToList();
+            var filteredFeedbacks =  feedbacks.Where(f => f.ProductId == Id).ToList();
+            await _cache.SetInCacheAsync($"feedbacksByProductKey_{Id}", filteredFeedbacks);
+            return filteredFeedbacks;
         }
         #endregion
 
@@ -60,7 +79,9 @@ namespace CustomerFeedbackSystem.Application.Services
         public async Task<Feedback> InsertFeedbackAsync(SubmitFeedbackDTO submitFeedbackDTO)
         {
             var feedback = _mapper.Map<Feedback>(submitFeedbackDTO);
-            return await _repo.Add(feedback);
+            var insertedFeedback = await _repo.Add(feedback);
+            await _cache.InvalidateCacheAsync("FeedbackKey");
+            return insertedFeedback;
         }
         #endregion
     }
