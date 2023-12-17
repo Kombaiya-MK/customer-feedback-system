@@ -5,11 +5,13 @@ using CustomerFeedbackSystem.Infrastructure.Repositories;
 using Dapper;
 using Moq;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomerFeedbackSystem.Tests.Infrastructure.Tests.Repositories
 {
     [TestFixture]
-    public class FeedbackTests
+    [ExcludeFromCodeCoverage]
+    public class FeedbackRepoTests
     {
         private Mock<FeedbackContext> _contextMock;
         private Mock<IDbConnection> _connectionMock;
@@ -25,23 +27,31 @@ namespace CustomerFeedbackSystem.Tests.Infrastructure.Tests.Repositories
             _feedbackRepo = new FeedbackRepository(_contextMock.Object); 
         }
         [Test]
-        public async Task AddFeedback_ActualObject_ReturnsObject()
+        public async Task Add_ShouldInsertFeedbackSuccessfully()
         {
-            //Arrange
+            // Arrange
             Feedback feedback = new()
             {
-                FeedbackId = 1,
+                UserId = 1,
                 ProductId = 1,
-                UserId = 1, 
-                Comment = "Great",
                 Rating = 5,
+                Comment = "Great",
                 Timestamp = DateTime.Now,
             };
 
-            _connectionMock.Setup(con => con.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null)).ReturnsAsync(1);
-            //Act
+            _connectionMock.Setup(conn => conn.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                          .ReturnsAsync(1);
 
-            //Assert
+            // Act
+            var result = await _feedbackRepo.Add(feedback);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(feedback.UserId, result.UserId);
+            Assert.AreEqual(feedback.ProductId, result.ProductId);
+            Assert.AreEqual(feedback.Rating, result.Rating);
+            Assert.AreEqual(feedback.Comment, result.Comment);
+            Assert.IsNotNull(result.Timestamp);
         }
     }
 }

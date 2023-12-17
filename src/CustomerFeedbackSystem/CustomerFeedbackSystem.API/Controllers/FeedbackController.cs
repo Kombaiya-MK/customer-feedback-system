@@ -3,6 +3,7 @@ using CustomerFeedbackSystem.Application.Interfaces;
 using CustomerFeedbackSystem.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomerFeedbackSystem.API.Controllers
 {
@@ -25,6 +26,8 @@ namespace CustomerFeedbackSystem.API.Controllers
         public async Task<ActionResult<ICollection<Feedback>>> GetFeedbacks(int id)
         {
             var feedbacks = await _service.GetFeedbacksByProductAsync(id);
+            if (feedbacks == null || feedbacks.Count == 0) 
+                return NotFound("No Feedbacks available!!!");
             return Ok(feedbacks);
         }
         #endregion
@@ -35,6 +38,8 @@ namespace CustomerFeedbackSystem.API.Controllers
         public async Task<ActionResult<Feedback>> GetFeedbacksById(int id)
         {
             var feedback = await _service.GetFeedbackAsync(id);
+            if (feedback == null)
+                return NotFound("Invalid Id");
             return Ok(feedback);
         }
         #endregion
@@ -46,7 +51,7 @@ namespace CustomerFeedbackSystem.API.Controllers
             var feedback = await _service.InsertFeedbackAsync(feedbackDTO);
             if(feedback != null)
             {
-                return Ok("Feedback Added Successfully");
+                return Created("Feedback Added Successfully", feedback);
             }
             return BadRequest("Unable to add");
             

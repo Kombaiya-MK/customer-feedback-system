@@ -7,6 +7,7 @@ using CustomerFeedbackSystem.Infrastructure.Interfaces;
 using CustomerFeedbackSystem.Infrastructure.Middleware;
 using CustomerFeedbackSystem.Infrastructure.Repositories;
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,3 +50,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+[ExcludeFromCodeCoverage]
+public partial class Program { 
+}

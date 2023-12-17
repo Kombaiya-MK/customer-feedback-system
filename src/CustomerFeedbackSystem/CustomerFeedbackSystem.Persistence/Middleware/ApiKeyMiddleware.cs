@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CustomerFeedbackSystem.Infrastructure.Middleware
 {
+    [ExcludeFromCodeCoverage]
     public class ApiKeyMiddleware
     {
         private readonly RequestDelegate _next;
