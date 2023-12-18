@@ -2,7 +2,9 @@
 using CustomerFeedbackSystem.Application.DTOs;
 using CustomerFeedbackSystem.Application.Services;
 using CustomerFeedbackSystem.Domain.Models;
+using CustomerFeedbackSystem.Infrastructure.Extensions;
 using CustomerFeedbackSystem.Infrastructure.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,7 @@ namespace CustomerFeedbackSystem.Tests.Application.Tests.Services
     {
         private Mock<IRepo<Feedback, int>> _repoMock;
         private Mock<IMapper> _mapperMock;
+        private Mock<IDistributedCache> _cacheMock;
         private FeedbackService _serviceMock;
 
         [SetUp]
@@ -26,8 +29,9 @@ namespace CustomerFeedbackSystem.Tests.Application.Tests.Services
         {
             _repoMock = new Mock<IRepo<Feedback, int>>();
             _mapperMock = new Mock<IMapper>();
+            _cacheMock = new Mock<IDistributedCache>();
 
-            _serviceMock = new FeedbackService(_repoMock.Object, _mapperMock.Object);
+            _serviceMock = new FeedbackService(_repoMock.Object, _mapperMock.Object, _cacheMock.Object);
         }
         [Test]
         public async Task GetFeedbackById_Returns_FeedbackObject()
@@ -42,7 +46,9 @@ namespace CustomerFeedbackSystem.Tests.Application.Tests.Services
                 Comment = "Great",
                 Timestamp = DateTime.Now,
             };
+            int id = 1;
 
+            _cacheMock.Setup(x => x.GetFromCacheAsync<Feedback>($"feedbackKey_{id}")).ReturnsAsync(feedback);    
             _repoMock.Setup(r => r.Get(1)).ReturnsAsync(feedback);
 
             //Act
@@ -75,6 +81,7 @@ namespace CustomerFeedbackSystem.Tests.Application.Tests.Services
               new Feedback { FeedbackId = 5, UserId = 2, ProductId = 1, Rating = 2, Comment = "Poor", Timestamp = DateTime.Now.AddDays(-4) },
             };
 
+            //_cacheMock.Setup(x => x.)
             _repoMock.Setup( r => r.GetAll()).ReturnsAsync(feedbackList );
 
             //Act
