@@ -1,6 +1,7 @@
 ﻿using CustomerFeedbackSystem.Application.DTOs;
 using CustomerFeedbackSystem.Application.Interfaces;
 using CustomerFeedbackSystem.Domain.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
@@ -9,6 +10,7 @@ namespace CustomerFeedbackSystem.API.Controllers
 {
     [Route("api/feedbacks")]
     [ApiController]
+    [EnableCors("MyCors")]
     public class FeedbackController : ControllerBase
     {
 
