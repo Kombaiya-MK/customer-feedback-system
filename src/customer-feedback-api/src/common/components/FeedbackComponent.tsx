@@ -11,15 +11,14 @@ interface Feedback {
 }
 
 interface FeedbackProps {
-  feedbacks: Feedback[];
-  feedbackType: React.FC<Feedback>;
+  feedback: Feedback[];
 }
 
-const FeedbackComponent: React.FC<FeedbackProps> = ({ feedbacks }) => {
+const FeedbackComponent: React.FC<FeedbackProps> = ({ feedback }) => {
   const dispatch = useDispatch();
   const [newFeedback, setNewFeedback] = useState<Feedback>({
-    userId: 1, // Assume a default user ID for simplicity
-    productId: 1, // Assume a default product ID for simplicity
+    userId: 1,
+    productId: 1,
     rating: 0,
     comment: "",
   });
@@ -46,19 +45,16 @@ const FeedbackComponent: React.FC<FeedbackProps> = ({ feedbacks }) => {
     dispatch(retriveFeedbacks());
   };
 
-  const averageRating = calculateAverageRating(
-    feedbacks,
-    newFeedback.productId
-  );
+  const averageRating = calculateAverageRating(feedback, newFeedback.productId);
 
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">Feedback Component</h2>
       <div>
-        {feedbacks.map((feedback) => (
-          <div key={feedback.productId} className="border p-4 mb-4">
-            <p>{feedback.comment}</p>
-            <StarRating rating={feedback.rating} />
+        {feedback.map((feedbackObj) => (
+          <div key={feedbackObj.productId} className="border p-4 mb-4">
+            <p>{feedbackObj.comment}</p>
+            <StarRating rating={feedbackObj.rating} />
           </div>
         ))}
       </div>

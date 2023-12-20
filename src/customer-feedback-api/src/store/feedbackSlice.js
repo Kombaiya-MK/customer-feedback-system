@@ -33,8 +33,8 @@ export const addFeedback = (feedback) =>
     onError: feedbackAdded.type,
   });
 
-export const retriveFeedbacks = () =>
+export const retriveFeedbacks = (id) =>
   apiCallBegan({
-    url: "feedbacks/product/{}",
+    url: `feedbacks/product/${id}`,
     onSuccess: feedbackRetrived.type,
   });
