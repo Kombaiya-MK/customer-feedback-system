@@ -24,7 +24,15 @@ builder.Services.AddSingleton<FeedbackContext>();
 builder.Services.AddScoped<IRepo<Feedback, int>, FeedbackRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-
+builder.Services.AddCors(opts =>
+{
+    opts.AddPolicy("MyCors", policy =>
+    {
+        policy.AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin();
+    });
+});
 // Access configuration
 var configuration = builder.Configuration;
 
@@ -48,13 +56,11 @@ if (app.Environment.IsDevelopment())
 }
 
 //Middlewares 
-
+app.UseCors("MyCors");
 app.UseMiddleware<ApiKeyMiddleware>();
-
 app.UseSerilogRequestLogging();
-
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
