@@ -8,6 +8,7 @@ import FeedbackComponent from "./Feedback";
 import UserType from "../utils/UserType";
 import Loader from "../utils/Loader";
 import Modal from "../utils/Modal";
+import { useNavigate } from "react-router-dom";
 
 interface Feedback {
   userId: number;
@@ -26,6 +27,7 @@ interface ProductData {
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(retriveFeedbacks());
@@ -108,7 +110,9 @@ const Home: React.FC = () => {
     },
   ];
 
-  const handleFeedbackButtonClick = (productId: number) => {};
+  const handleFeedbackButtonClick = (productId: number) => {
+    navigate(`/feedbacks/product/${productId}`);
+  };
 
   return (
     <div className="max-w-screen-xxl mx-auto p-6">
